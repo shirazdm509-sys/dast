@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>پنل مدیریت - رساله دستغیب</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/admin/css/admin.css"/>
+</head>
+<body>
+
+<div class="admin-header">
+  <h1>پنل مدیریت رساله دستغیب</h1>
+  <a href="/" class="back-btn">بازگشت به چت</a>
+</div>
+
+<nav class="admin-nav">
+  <button class="nav-btn active" onclick="showSection('dashboard')">داشبورد</button>
+  <button class="nav-btn" onclick="showSection('bugs')">اشکالات</button>
+  <button class="nav-btn" onclick="showSection('tickets')">پشتیبانی</button>
+  <button class="nav-btn" onclick="showSection('users')">کاربران</button>
+  <button class="nav-btn" onclick="showSection('settings')">تنظیمات</button>
+  <button class="nav-btn" onclick="showSection('broadcast')">اطلاع‌رسانی</button>
+  <button class="nav-btn" onclick="showSection('logs')">لاگ‌ها</button>
+</nav>
+
+<div class="admin-content">
+
+  <!-- DASHBOARD -->
+  <div class="admin-section active" id="sec-dashboard">
+    <h2 class="section-title">داشبورد</h2>
+    <div id="dashContent"><p style="color:var(--mu)">در حال بارگذاری...</p></div>
+  </div>
+
+  <!-- BUGS -->
+  <div class="admin-section" id="sec-bugs">
+    <h2 class="section-title">گزارش اشکالات</h2>
+    <div id="bugsContent"><p style="color:var(--mu)">در حال بارگذاری...</p></div>
+  </div>
+
+  <!-- TICKETS -->
+  <div class="admin-section" id="sec-tickets">
+    <h2 class="section-title">تیکت‌های پشتیبانی</h2>
+    <div id="ticketsContent"><p style="color:var(--mu)">در حال بارگذاری...</p></div>
+  </div>
+
+  <!-- USERS -->
+  <div class="admin-section" id="sec-users">
+    <h2 class="section-title">مدیریت کاربران</h2>
+    <div class="users-form">
+      <input id="newUser" placeholder="نام کاربری"/>
+      <input id="newPass" type="password" placeholder="رمز عبور"/>
+      <select id="newRole"><option value="user">کاربر</option><option value="admin">ادمین</option></select>
+      <button onclick="addUser()">افزودن کاربر</button>
+    </div>
+    <div id="usersContent"></div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="admin-section" id="sec-settings">
+    <h2 class="section-title">تنظیمات سایت</h2>
+    <div id="settingsContent"></div>
+  </div>
+
+  <!-- BROADCAST -->
+  <div class="admin-section" id="sec-broadcast">
+    <h2 class="section-title">ارسال اطلاع‌رسانی</h2>
+    <div class="broadcast-form">
+      <input id="bcTitle" placeholder="عنوان (اختیاری)"/>
+      <textarea id="bcMessage" rows="4" placeholder="متن پیام *"></textarea>
+      <button class="save-btn" onclick="sendBroadcast()">ارسال به همه کاربران</button>
+    </div>
+    <div id="broadcastHistory" style="margin-top:16px"></div>
+  </div>
+
+  <!-- LOGS -->
+  <div class="admin-section" id="sec-logs">
+    <h2 class="section-title">لاگ‌های سیستم</h2>
+    <div style="margin-bottom:10px">
+      <button class="action-btn purple" onclick="loadLogs('all')">همه لاگ‌ها</button>
+      <button class="action-btn red" onclick="loadLogs('error')">فقط خطاها</button>
+    </div>
+    <div id="logsContent"></div>
+  </div>
+
+</div>
+
+<script type="module" src="/admin/js/admin-app.js"></script>
+</body>
+</html>

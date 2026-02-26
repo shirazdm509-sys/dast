@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>رساله آیت‌الله سید علی محمد دستغیب</title>
+<link rel="manifest" href="/manifest.json"/>
+<meta name="theme-color" content="#0d0d1a"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="رساله دستغیب"/>
+<link rel="apple-touch-icon" href="/icon-192.png"/>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/css/main.css"/>
+</head>
+<body>
+
+<!-- ══ LOGIN ══════════════════════════════════════════════════ -->
+<div id="loginScreen">
+  <div class="lcard">
+    <div class="llogo">
+      <span class="em">&#128218;</span>
+      <h1>رساله آیت‌الله<br/>سید علی محمد دستغیب</h1>
+      <p>دستیار هوشمند احکام فقهی</p>
+    </div>
+    <div class="fg">
+      <label>نام کاربری</label>
+      <input id="lu" placeholder="username" autocomplete="username"/>
+    </div>
+    <div class="fg">
+      <label>رمز عبور</label>
+      <input id="lp" type="password" placeholder="password" autocomplete="current-password"/>
+    </div>
+    <button class="btn-login" onclick="doLogin()">ورود به سیستم</button>
+    <div class="lerr" id="lerr"></div>
+  </div>
+</div>
+
+<!-- ══ APP ═══════════════════════════════════════════════════ -->
+<div id="app">
+
+<header>
+  <div class="hbrand">
+    <div class="hlogo">
+      <img id="siteLogo" src="/icon-192.png" alt="لوگو"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <span class="hlogo-fallback" style="display:none">&#128218;</span>
+    </div>
+    <div class="htxt">
+      <h1 id="siteTitle">رساله آیت‌الله<br/>سید علی محمد دستغیب</h1>
+      <span id="siteSub">دستیار احکام</span>
+    </div>
+  </div>
+  <div class="hacts">
+    <div class="ubadge">
+      <span id="huser"></span>
+      <span class="rtag u" id="hrole">کاربر</span>
+    </div>
+    <button class="ico" id="btnAdmin" onclick="openAdmin()" title="پنل ادمین" style="display:none">&#128737;</button>
+    <button class="ico" onclick="clearChat()" title="پاک کردن">&#128465;</button>
+    <button class="ico" id="btnSB" onclick="toggleSB()" title="منو">&#9776;</button>
+    <button class="ico" onclick="doLogout()" title="خروج">&#128682;</button>
+  </div>
+</header>
+
+<div class="abody">
+
+  <!-- موبایل overlay -->
+  <div id="mobOverlay" onclick="closeSB()"></div>
+
+  <!-- CHAT -->
+  <div class="chat">
+    <div id="msgs">
+      <div class="welcome" id="welcomeEl">
+        <div class="wico">&#127807;</div>
+        <h2>رساله آیت‌الله سید علی محمد دستغیب</h2>
+        <p id="welcomeTxt">سوال فقهی خود را بپرسید. جواب با ذکر شماره مسئله ارائه می‌شود.</p>
+      </div>
+    </div>
+    <div class="iarea">
+      <div class="irow">
+        <textarea id="qi" placeholder="سوال فقهی خود را بنویسید..." rows="1"
+          onkeydown="onKey(event)" oninput="resizeInput(this)"></textarea>
+        <div class="ibtns">
+          <button id="bstop" onclick="stopStream()" title="توقف">&#9209;</button>
+          <button class="bsend" id="bsend" onclick="sendMsg()">&#8593;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sb">
+    <div class="stabs">
+      <div class="stab on" onclick="stab('bug')">&#128027; اشکال</div>
+      <div class="stab" onclick="stab('sup')">&#128172; پشتیبانی</div>
+    </div>
+
+    <!-- BUG -->
+    <div class="tcon on" id="tbug">
+      <p style="font-size:11px;color:var(--mu)">اگر پاسخ اشتباه بود یا مشکلی پیش آمد گزارش دهید:</p>
+      <div class="bform">
+        <input id="btitle" placeholder="عنوان مشکل *"/>
+        <textarea id="bdesc" rows="3" placeholder="توضیح مشکل *"></textarea>
+        <textarea id="bq" rows="2" placeholder="سوالی که پرسیدید (اختیاری)"></textarea>
+        <button class="bsub" onclick="submitBug()">ارسال گزارش</button>
+        <div class="bsuc" id="bsuc">ارسال شد. ممنون!</div>
+      </div>
+    </div>
+
+    <!-- SUPPORT -->
+    <div class="tcon" id="tsup">
+      <button class="btn-new-t" onclick="openNewTicket()">تیکت جدید</button>
+      <div id="ticketList"><p style="font-size:11px;color:var(--mu);text-align:center;padding:10px 0">در حال بارگذاری...</p></div>
+    </div>
+  </div>
+</div>
+</div><!-- /app -->
+
+<!-- ══ ADMIN MODAL ════════════════════════════════════════════ -->
+<div class="modal" id="adminModal">
+  <div class="mcard wide">
+    <div class="mhead">
+      <h2>پنل مدیریت</h2>
+      <button class="ico" onclick="closeAdmin()">&#10005;</button>
+    </div>
+    <div class="mbody">
+      <div class="atabs">
+        <button class="atab on" onclick="atab('Dashboard')">داشبورد</button>
+        <button class="atab" onclick="atab('Bugs')">اشکالات</button>
+        <button class="atab" onclick="atab('Support')">پشتیبانی</button>
+        <button class="atab" onclick="atab('Users')">کاربران</button>
+        <button class="atab" onclick="atab('Settings')">تنظیمات</button>
+        <button class="atab" onclick="atab('Logs')">لاگ‌ها</button>
+      </div>
+
+      <!-- DASHBOARD -->
+      <div class="apanel on" id="apDashboard">
+        <p style="color:var(--mu);text-align:center">در حال بارگذاری...</p>
+      </div>
+
+      <!-- BUGS PANEL -->
+      <div class="apanel" id="apBugs">
+        <div id="adminBugList"><p style="color:var(--mu);text-align:center">در حال بارگذاری...</p></div>
+      </div>
+
+      <!-- SUPPORT PANEL -->
+      <div class="apanel" id="apSupport">
+        <div id="adminSupList"><p style="color:var(--mu);text-align:center">در حال بارگذاری...</p></div>
+      </div>
+
+      <!-- USERS PANEL -->
+      <div class="apanel" id="apUsers">
+        <div class="uform">
+          <input id="unew" placeholder="نام کاربری جدید"/>
+          <input id="pnew" type="password" placeholder="رمز عبور"/>
+          <select id="rnew"><option value="user">کاربر</option><option value="admin">ادمین</option></select>
+          <button class="ubtn" onclick="createUser()">افزودن</button>
+        </div>
+        <table class="utable">
+          <thead><tr><th>کاربری</th><th>نقش</th><th>تاریخ ثبت</th><th>عملیات</th></tr></thead>
+          <tbody id="usersTbody"></tbody>
+        </table>
+      </div>
+
+      <!-- SETTINGS PANEL -->
+      <div class="apanel" id="apSettings">
+        <div class="srow"><label>عنوان سایت</label><input id="sSiteTitle"/></div>
+        <div class="srow"><label>زیرعنوان</label><input id="sSiteSub"/></div>
+        <div class="srow"><label>متن خوش‌آمدگویی</label><input id="sWelcome"/></div>
+        <div class="srow">
+          <label>رنگ اصلی <span class="cprev" id="cpPrimary"></span></label>
+          <input id="sPrimary" placeholder="#7c6af7" oninput="prevColor('sPrimary','cpPrimary')"/>
+        </div>
+        <div class="srow">
+          <label>رنگ طلایی <span class="cprev" id="cpGold"></span></label>
+          <input id="sGold" placeholder="#e8c97a" oninput="prevColor('sGold','cpGold')"/>
+        </div>
+        <button class="ssave" onclick="saveSettings()">ذخیره تنظیمات</button>
+      </div>
+
+      <!-- LOGS PANEL -->
+      <div class="apanel" id="apLogs">
+        <p style="color:var(--mu);text-align:center">در حال بارگذاری...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TICKET MODAL ═══════════════════════════════════════════ -->
+<div class="modal" id="ticketModal">
+  <div class="mcard narrow">
+    <div class="mhead">
+      <h2 id="tkTitle">تیکت پشتیبانی</h2>
+      <button class="ico" onclick="closeTicketModal()">&#10005;</button>
+    </div>
+    <div class="mbody">
+      <!-- فرم جدید -->
+      <div id="tkNewForm" style="display:none">
+        <div class="srow"><label>موضوع *</label><input id="tkSubject" placeholder="موضوع تیکت"/></div>
+        <div class="srow">
+          <label>پیام *</label>
+          <textarea id="tkMsg" rows="4" style="background:var(--s2);border:1px solid var(--br);border-radius:8px;color:var(--tx);font-family:'Vazirmatn',sans-serif;font-size:13px;padding:9px;outline:none;resize:none;width:100%"></textarea>
+        </div>
+        <button class="ubtn" onclick="sendNewTicket()">ارسال تیکت</button>
+      </div>
+      <!-- چت تیکت -->
+      <div id="tkChat" style="display:none">
+        <div class="schat" id="tkMsgs"></div>
+        <div class="replyw">
+          <textarea id="tkReply" rows="2" placeholder="پیام خود را بنویسید..."></textarea>
+          <button onclick="sendReply()">ارسال</button>
+        </div>
+        <button class="abtn er" id="tkCloseBtn" onclick="closeTicketStatus()" style="display:none;margin-top:8px;width:100%">بستن تیکت</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ INSTALL BANNER ════════════════════════════════════════ -->
+<div id="installBanner">
+  <span>نصب روی گوشی</span>
+  <button onclick="installPWA()">نصب</button>
+  <button onclick="document.getElementById('installBanner').classList.remove('show')"
+    style="background:transparent;color:var(--mu);border:none;cursor:pointer;font-size:16px">&#10005;</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module" src="/js/app.js"></script>
+</body>
+</html>
