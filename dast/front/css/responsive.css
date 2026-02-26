@@ -1,0 +1,57 @@
+/* ══ RESPONSIVE DESIGN ══════════════════════════════════════ */
+
+/* Mobile: sidebar as drawer */
+@media(max-width:768px){
+  .sidebar{
+    position:fixed;top:57px;right:0;bottom:0;z-index:40;
+    width:min(280px,85vw);transform:translateX(100%);transition:transform .3s;
+  }
+  .sidebar.open{transform:translateX(0)}
+  .htxt h1{white-space:normal}
+}
+
+@media(min-width:769px){
+  #mobOverlay{display:none !important}
+}
+
+/* Small phones */
+@media(max-width:479px){
+  .hbrand .htxt h1{font-size:11px}
+  .msg{max-width:95%}
+  .bubble{font-size:13px}
+  .sidebar{width:100vw !important}
+  header{padding:8px 10px}
+  .hacts{gap:3px}
+  .ico{width:28px;height:28px;font-size:12px}
+  .mcard{border-radius:12px}
+  .mcard.wide,.mcard.narrow{max-width:100%}
+  .mbody{padding:12px}
+  .atabs{gap:3px}
+  .atab{padding:5px 8px;font-size:11px}
+}
+
+/* Large phones / tablet portrait */
+@media(min-width:480px) and (max-width:768px){
+  .sidebar{width:min(320px,85vw)}
+  .htxt h1{white-space:normal;font-size:12px}
+}
+
+/* Tablet landscape / small laptop */
+@media(min-width:769px) and (max-width:1024px){
+  .sidebar{width:240px}
+}
+
+/* Desktop */
+@media(min-width:1025px){
+  .sidebar{width:280px}
+  #msgs{max-width:900px;margin:0 auto;padding:20px}
+}
+
+/* Landscape on mobile */
+@media(max-height:500px) and (orientation:landscape){
+  header{padding:5px 10px}
+  .hlogo{width:28px;height:28px}
+  .iarea{padding:5px 10px 8px}
+  .welcome{padding:10px;gap:6px}
+  .wico{width:40px;height:40px;font-size:20px}
+}

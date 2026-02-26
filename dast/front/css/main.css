@@ -1,0 +1,18 @@
+@import url('./variables.css');
+@import url('./components.css');
+@import url('./responsive.css');
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;max-width:100%}
+html,body{
+  min-height:100%;
+  overflow-x:hidden;
+  overscroll-behavior-y:contain;
+}
+body{
+  font-family:'Vazirmatn',sans-serif;background:var(--bg);color:var(--tx);
+  display:flex;
+  flex-direction:column;
+  height:100dvh;
+}
+input,textarea{font-size:16px !important}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--br);border-radius:4px}
